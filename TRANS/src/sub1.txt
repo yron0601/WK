@@ -1,0 +1,54 @@
+package com.example.hb03;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
+public class Activity_Sub1 extends Activity{
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	
+		//-----------------------------------------
+		//新しいレイアウトを作る
+		LinearLayout L_layout1 = new LinearLayout(this);
+		//レイアウトを画面にセットする
+		setContentView(L_layout1);
+		//レイアウトの背景を青にする
+	    	L_layout1.setBackgroundColor(Color.BLUE);
+		
+		//-----------------------------------------
+		//新しいボタンを作る
+		Button button1 = new Button(this);
+		//ボタンに文字を表示
+     		 button1.setText("GO BACK");
+		//ボタンをレイアウトに追加
+		L_layout1.addView(button1);
+		//-----------------------------------------
+		//ボタンの表示位置指定
+		LinearLayout.LayoutParams layoutParams = 
+				new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.WRAP_CONTENT, 
+						LinearLayout.LayoutParams.WRAP_CONTENT);
+		layoutParams.setMargins(100, 300, 0, 0);
+		button1.setLayoutParams(layoutParams);
+		//-----------------------------------------
+		//ボタンが押されたかどうか監視する
+        	button1.setOnClickListener( new OnClickListener() {
+            
+        		//ボタンが押されたら何かする
+            		@Override
+            		public void onClick(View v) {
+
+            			//この画面を終了
+				finish();
+      	     	 	}
+		});
+		//-----------------------------------------
+	}
+}	

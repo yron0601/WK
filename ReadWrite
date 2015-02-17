@@ -1,0 +1,175 @@
+package com.example.hb05;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.content.Intent;
+
+//ActivityにOnClickListenerを設定しておく
+public class HB05Activity extends Activity implements OnClickListener{
+
+	Button[] varButton = new Button[2];
+	EditText varEditText;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		//LinearLayoutをインスタンス化する
+		LinearLayout varLayout = new LinearLayout(this);
+		setContentView(varLayout);
+
+
+		//Buttonのインスタンスを2個生成する		
+                varButton[0] = new Button(this);
+                varButton[1]= new Button(this);  		
+
+		//Buttonに表示するテキストを設定		
+                varButton[0].setText("Read");
+		varButton[1].setText("Next");
+
+                //EditTextのインスタンスを生成する
+		varEditText = new EditText(this);
+		//EditTextの最大行数を設定する
+		//varEditText.setLines(16);
+
+		//ViewにEditTextを追加する
+		varLayout.addView(varEditText);		
+
+		//ButtonをLinearLayoutに追加してEventListenerを取得する		
+                varLayout.addView(varButton[0]);
+		varButton[0].setOnClickListener(this);
+                varLayout.addView(varButton[1]);
+		varButton[1].setOnClickListener(this);		
+	}
+
+	public void onClick(View v){
+		//Readボタンが押された時の処理		
+                if(v == varButton[0]){
+                        try{
+				//入力ストリームの生成
+				FileInputStream imputStream = openFileInput("Sample.txt");
+				//入力ストリームのバッファーリング
+				BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+				//シーケンスオブジェクトの生成
+				StringBuffer sequence = new StringBuffer();
+				String readText;
+				//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+				while((readText = tmpBuffere.readLine()) != null){
+					sequence.append(readText);
+				}
+				//シーケンスに格納された文字列をエディットテキストに表示する
+				varEditText.setText(sequence);
+				//入力ストリームを閉じる
+				imputStream.close();
+			}
+			catch (Exception e){
+			}		
+		}
+
+		//Nextボタンが押された時の処理		
+                else if(v == varButton[1]){
+			//インテントに、この画面と、遷移する別の画面を指定する
+	            	Intent intent = new Intent(HB05Activity.this,Activity_Sub1.class);
+
+            		//インテントで指定した別の画面に遷移する
+            		startActivity(intent);
+		}
+	}
+}
+
+-------------------
+package com.example.hb05;
+
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+
+//ActivityにOnClickListenerを設定しておく
+public class Activity_Sub1 extends Activity implements OnClickListener{
+
+	Button[] varButton = new Button[2];
+	EditText varEditText;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		//LinearLayoutをインスタンス化する
+		LinearLayout varLayout = new LinearLayout(this);
+		setContentView(varLayout);
+
+
+		//Buttonのインスタンスを2個生成する		
+                varButton[0] = new Button(this);
+                varButton[1]= new Button(this);  		
+
+		//Buttonに表示するテキストを設定		
+                varButton[0].setText("Write");
+		varButton[1].setText("Return");
+
+		//EditTextのインスタンスを生成する
+		varEditText = new EditText(this);
+		//EditTextの最大行数を設定する
+		//varEditText.setLines(16);
+
+		//ViewにEditTextを追加する
+		varLayout.addView(varEditText);
+
+		//ButtonをLinearLayoutに追加してEventListenerを取得する		
+                varLayout.addView(varButton[0]);
+		varButton[0].setOnClickListener(this);
+                varLayout.addView(varButton[1]);
+		varButton[1].setOnClickListener(this);		
+	}
+
+	public void onClick(View v){
+		//Writeボタンが押された時の処理		
+                if(v == varButton[0]){
+			try{
+				//出力ストリームの生成
+				FileOutputStream outputStream = openFileOutput("Sample.txt",Context.MODE_PRIVATE);
+				//出力ストリームのバッファーリング
+				BufferedWriter saveText = new BufferedWriter(new OutputStreamWriter(outputStream));
+				//エディットテキストの文字列をバッファーに格納する
+				saveText.write(varEditText.getText().toString());
+				//バッファーのデータをファイルに書き込む
+				saveText.flush();
+				//出力ストリームを閉じる
+				outputStream.close();
+			}
+			catch(Exception e){
+			}
+		}
+
+		//Returnボタンが押された時の処理		
+                else if(v == varButton[1]){
+                             //この画面を終了
+                             finish();			
+
+		}
+	}
+}

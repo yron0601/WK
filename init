@@ -1,0 +1,543 @@
+package com.example.hb053;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+import com.example.hb053.Activity_Sub053;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
+import android.graphics.Typeface;
+import android.widget.Toast;
+
+//ActivityにOnClickListenerを設定しておく
+public class Activity_Sub053 extends Activity implements OnClickListener{
+
+	//見出し　連絡メール（初期設定）
+	TextView varTextView1;
+	//宛名
+	TextView varTextView2;	
+	//母ｱﾄﾞﾚｽ
+	TextView varTextView3;	
+	EditText varEditText3;
+	//父ｱﾄﾞﾚｽ
+	TextView varTextView4;	
+	EditText varEditText4;
+	//習い事
+	TextView varTextView5;
+	//塾　GPS
+	TextView varTextView61;	
+	EditText varEditText6;
+	TextView varTextView62;
+	//ﾋﾟｱﾉ　GPS
+	TextView varTextView71;	
+	EditText varEditText7;
+	TextView varTextView72;
+	//差出人
+	TextView varTextView8;	
+	EditText varEditText8;
+	
+	//確認ボタン
+	Button varButton1;	
+	//保存ボタン
+	Button varButton2;
+	//戻るボタン
+	Button varButton3;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		//LinearLayoutをインスタンス化する
+		//見出し
+		LinearLayout varLayout1 = new LinearLayout(this);
+		//宛名
+		LinearLayout varLayout2 = new LinearLayout(this);		
+		//母アドレス
+		LinearLayout varLayout3 = new LinearLayout(this);
+		//父アドレス
+		LinearLayout varLayout4 = new LinearLayout(this);
+		//習い事
+		LinearLayout varLayout5 = new LinearLayout(this);		
+		//塾　GPS
+		LinearLayout varLayout6 = new LinearLayout(this);
+		//ピアノ　GPS
+		LinearLayout varLayout7 = new LinearLayout(this);
+		//差出人
+		LinearLayout varLayout8 = new LinearLayout(this);
+		//ボタン
+		LinearLayout varLayout9 = new LinearLayout(this);
+		
+		//縦並び		
+		varLayout1.setOrientation(LinearLayout.VERTICAL); 
+		//setContentView(varLayout1);
+		//varLayout2.setOrientation(LinearLayout.VERTICAL); 
+		//setContentView(varLayout2); @abend
+		//varLayout5.setOrientation(LinearLayout.VERTICAL);
+		setContentView(varLayout1);
+		//setContentView(varLayout5);		
+		//横並び デフォルト　
+		//varLayout3.setOrientation(LinearLayout.HORIZONTAL);		
+		//setContentView(varLayout3);
+
+		//Buttonのインスタンスを2個生成する
+		//確認ボタン
+        varButton1 = new Button(this);
+		LayoutParams parms91 = new LayoutParams(200,100);		
+		parms91.setMargins(50,0,0,0);		
+		varButton1.setLayoutParams(parms91); 
+		//保存ボタン
+        varButton2 = new Button(this);
+		LayoutParams parms92 = new LayoutParams(200,100);		
+		parms92.setMargins(0,0,0,0);		
+		varButton2.setLayoutParams(parms92);
+		//戻るボタン
+        varButton3 = new Button(this);
+		LayoutParams parms93 = new LayoutParams(200,100);		
+		parms93.setMargins(0,0,0,0);		
+		varButton3.setLayoutParams(parms93);
+
+		//Buttonに表示するテキストを設定
+        varButton1.setText("確認");
+        varButton2.setText("保存");
+		varButton3.setText("戻る");
+		
+		//TextView・EditTextのインスタンスを生成する
+		//見出し
+		varTextView1 = new TextView(this);
+		//宛名
+		varTextView2 = new TextView(this);		
+		//母アドレス
+		varTextView3 = new TextView(this);		
+		varEditText3 = new EditText(this);
+		//父アドレス
+		varTextView4 = new TextView(this);		
+		varEditText4 = new EditText(this);
+		//習い事
+		varTextView5 = new TextView(this);
+		//塾　GPS
+		varTextView61 = new TextView(this);		
+		varEditText6  = new EditText(this);
+		varTextView62 = new TextView(this);
+		//ピアノ　GPS
+		varTextView71 = new TextView(this);		
+		varEditText7  = new EditText(this);
+		varTextView72 = new TextView(this);
+		//差出人
+		varTextView8 = new TextView(this);		
+		varEditText8 = new EditText(this);
+				
+        //見出しの設定
+		//LayoutParams(幅,高さ)
+		//setMargins(左,上,右､下)
+		LayoutParams parms1 = new LayoutParams(600,80);		
+		parms1.setMargins(100,0,0,0);		
+		varTextView1.setLayoutParams(parms1);		
+		varTextView1.setText("連絡メール（初期設定）");	
+        varTextView1.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView1.setTextSize(20);        
+        //宛名の設定     
+		LayoutParams parms2 = new LayoutParams(100,80);		
+		parms2.setMargins(0,0,0,0);		
+		varTextView2.setLayoutParams(parms2);		
+		varTextView2.setText("宛名");	
+        varTextView2.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView2.setTextSize(15); 
+        //母アドレスの設定     
+		LayoutParams parms31 = new LayoutParams(100,80);		
+		parms31.setMargins(0,0,0,0);		
+		varTextView3.setLayoutParams(parms31);		
+		varTextView3.setText("・母:");	
+        varTextView3.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView3.setTextSize(15);			
+		LayoutParams parms32 = new LayoutParams(600,80);		
+		parms32.setMargins(0,0,0,0);
+		varEditText3.setLayoutParams(parms32);		
+        //父アドレスの設定     
+		LayoutParams parms41 = new LayoutParams(100,80);		
+		parms41.setMargins(0,0,0,0);		
+		varTextView4.setLayoutParams(parms41);		
+		varTextView4.setText("・父:");	
+        varTextView4.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView4.setTextSize(15);			
+		LayoutParams parms42 = new LayoutParams(600,80);		
+		parms42.setMargins(0,0,0,0);
+		varEditText4.setLayoutParams(parms42);		
+        //習い事の設定     
+		LayoutParams parms5 = new LayoutParams(800,80);		
+		parms5.setMargins(0,20,0,0);		
+		varTextView5.setLayoutParams(parms5);		
+		varTextView5.setText("習い事（GPS保存なら「S」と入力）");	
+        varTextView5.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView2.setTextSize(15); 
+        //塾　GPSの設定     
+		LayoutParams parms61 = new LayoutParams(200,80);		
+		parms61.setMargins(0,0,0,0);		
+		varTextView61.setLayoutParams(parms61);		
+		varTextView61.setText("・塾:");	
+        varTextView61.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView61.setTextSize(15);			
+		LayoutParams parms6 = new LayoutParams(100,80);		
+		parms6.setMargins(0,0,0,0);
+		varEditText6.setLayoutParams(parms6);
+		LayoutParams parms62 = new LayoutParams(400,80);		
+		parms62.setMargins(20,0,0,0);
+		varTextView62.setLayoutParams(parms62);		
+        //ピアノ　GPSの設定     
+		LayoutParams parms71 = new LayoutParams(200,80);		
+		parms71.setMargins(0,0,0,0);		
+		varTextView71.setLayoutParams(parms71);		
+		varTextView71.setText("・ピアノ:");	
+        varTextView71.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView71.setTextSize(15);			
+		LayoutParams parms7 = new LayoutParams(100,80);		
+		parms7.setMargins(0,0,0,0);
+		varEditText7.setLayoutParams(parms7);
+		LayoutParams parms72 = new LayoutParams(400,80);		
+		parms72.setMargins(20,0,0,0);
+		varTextView72.setLayoutParams(parms72);
+        //差出人の設定     
+		LayoutParams parms81 = new LayoutParams(200,80);		
+		parms81.setMargins(0,0,0,0);		
+		varTextView8.setLayoutParams(parms81);		
+		varTextView8.setText("・差出人:");	
+        varTextView8.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView8.setTextSize(15);			
+		LayoutParams parms82 = new LayoutParams(200,100);		
+		parms82.setMargins(0,0,0,0);
+		varEditText8.setLayoutParams(parms82);        
+		
+		//ViewにTextViewを追加する
+        //見出し
+		varLayout1.addView(varTextView1);
+		//宛名
+		varLayout2.addView(varTextView2);		
+		//母アドレス
+		varLayout3.addView(varTextView3);		
+		varLayout3.addView(varEditText3);
+		//父アドレス
+		varLayout4.addView(varTextView4);		
+		varLayout4.addView(varEditText4);
+		//習い事
+		varLayout5.addView(varTextView5);
+		//塾　GPS
+		varLayout6.addView(varTextView61);		
+		varLayout6.addView(varEditText6);
+		varLayout6.addView(varTextView62);
+		//ピアノ　GPS
+		varLayout7.addView(varTextView71);		
+		varLayout7.addView(varEditText7);
+		varLayout7.addView(varTextView72);
+		//アドレス
+		varLayout8.addView(varTextView8);		
+		varLayout8.addView(varEditText8);
+		
+		//
+		varLayout1.addView(varLayout2);
+		varLayout1.addView(varLayout3);
+		varLayout1.addView(varLayout4);
+		varLayout1.addView(varLayout5);
+		varLayout1.addView(varLayout6);
+		varLayout1.addView(varLayout7);
+		varLayout1.addView(varLayout8);
+
+		//ButtonをLinearLayoutに追加してEventListenerを取得する
+		//確認ボタン
+        varLayout9.addView(varButton1);
+		varButton1.setOnClickListener(this);		
+		//保存ボタン
+        varLayout9.addView(varButton2);
+		varButton2.setOnClickListener(this);
+		//戻るボタン
+        varLayout9.addView(varButton3);
+		varButton3.setOnClickListener(this);
+        //ボタン　横並び
+		varLayout1.addView(varLayout9); 	
+	}
+	
+	
+
+	public void onClick(View v){
+		//確認ボタンが押された時の処理
+		if(v == varButton1){
+	        try{
+				//入力ストリームの生成
+				FileInputStream imputStream = openFileInput("Mother.txt");
+				//入力ストリームのバッファーリング
+				BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+				//シーケンスオブジェクトの生成
+				StringBuffer sequence3 = new StringBuffer();
+				String readText;
+				//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+				while((readText = tmpBuffere.readLine()) != null){
+					sequence3.append(readText);
+				}
+				//シーケンスに格納された文字列をエディットテキストに表示する
+				varEditText3.setText(sequence3);
+				//入力ストリームを閉じる
+				imputStream.close();
+	            }
+			    catch(Exception e){
+			    }
+	        try{
+				//入力ストリームの生成
+				FileInputStream imputStream = openFileInput("Father.txt");
+				//入力ストリームのバッファーリング
+				BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+				//シーケンスオブジェクトの生成
+				StringBuffer sequence4 = new StringBuffer();
+				String readText;
+				//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+				while((readText = tmpBuffere.readLine()) != null){
+					sequence4.append(readText);
+				}
+				//シーケンスに格納された文字列をエディットテキストに表示する
+				varEditText4.setText(sequence4);
+				//入力ストリームを閉じる
+				imputStream.close();
+	            }
+			    catch(Exception e){
+			    }
+	        //add start---------------------------------
+	        try{
+				//入力ストリームの生成
+				FileInputStream imputStream = openFileInput("CramSchool.txt");
+				//入力ストリームのバッファーリング
+				BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+				//シーケンスオブジェクトの生成
+				StringBuffer sequence6 = new StringBuffer();
+				String readText;
+				//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+				while((readText = tmpBuffere.readLine()) != null){
+					sequence6.append(readText);
+				}
+				//シーケンスに格納された文字列をエディットテキストに表示する
+				varTextView62.setText(sequence6);
+				//入力ストリームを閉じる
+				imputStream.close();
+	            }
+			    catch(Exception e){
+			    }
+	        try{
+				//入力ストリームの生成
+				FileInputStream imputStream = openFileInput("Piano.txt");
+				//入力ストリームのバッファーリング
+				BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+				//シーケンスオブジェクトの生成
+				StringBuffer sequence7 = new StringBuffer();
+				String readText;
+				//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+				while((readText = tmpBuffere.readLine()) != null){
+					sequence7.append(readText);
+				}
+				//シーケンスに格納された文字列をエディットテキストに表示する
+				varTextView72.setText(sequence7);
+				//入力ストリームを閉じる
+				imputStream.close();
+	            }
+			    catch(Exception e){
+			    }
+	        //add end------------------------------------
+	        /*
+	        //一時的テスト　start
+        	Intent intent6 = getIntent();
+        	String text6 = intent6.getStringExtra("s3");
+        	
+        	//Toast.makeText(Activity_Sub053.this, text6, Toast.LENGTH_LONG).show();
+        	
+        	varTextView62.setText(text6);
+	        
+	        //一時的テスト　end
+	        */
+	        try{
+				//入力ストリームの生成
+				FileInputStream imputStream = openFileInput("Sender.txt");
+				//入力ストリームのバッファーリング
+				BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+				//シーケンスオブジェクトの生成
+				StringBuffer sequence8 = new StringBuffer();
+				String readText;
+				//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+				while((readText = tmpBuffere.readLine()) != null){
+					sequence8.append(readText);
+				}
+				//シーケンスに格納された文字列をエディットテキストに表示する
+				varEditText8.setText(sequence8);
+				//入力ストリームを閉じる
+				imputStream.close();
+	            }
+			    catch(Exception e){
+			    }	        
+		}
+		//保存ボタンが押された時の処理
+		else if(v == varButton2){
+	    try{
+		    //出力ストリームの生成
+		    FileOutputStream outputStream = openFileOutput("Mother.txt",Context.MODE_PRIVATE);
+		    //出力ストリームのバッファーリング
+		    BufferedWriter saveText = new BufferedWriter(new OutputStreamWriter(outputStream));
+		    //エディットテキストの文字列をバッファーに格納する
+		    saveText.write(varEditText3.getText().toString());				
+		    //バッファーのデータをファイルに書き込む
+		    saveText.flush();							
+		    //出力ストリームを閉じる
+		    outputStream.close();
+	        }
+	        catch(Exception e){
+	        }
+	    try{
+		    //出力ストリームの生成
+		    FileOutputStream outputStream = openFileOutput("Father.txt",Context.MODE_PRIVATE);
+		    //出力ストリームのバッファーリング
+		    BufferedWriter saveText = new BufferedWriter(new OutputStreamWriter(outputStream));
+		    //エディットテキストの文字列をバッファーに格納する
+		    saveText.write(varEditText4.getText().toString());
+		    //バッファーのデータをファイルに書き込む
+		    saveText.flush();
+		    //出力ストリームを閉じる
+		    outputStream.close();
+	        }
+	        catch(Exception e){
+	        }
+
+	    try{
+			//出力ストリームの生成
+			FileOutputStream outputStream = openFileOutput("Sender.txt",Context.MODE_PRIVATE);
+			//出力ストリームのバッファーリング
+			BufferedWriter saveText = new BufferedWriter(new OutputStreamWriter(outputStream));
+			//エディットテキストの文字列をバッファーに格納する
+			saveText.write(varEditText8.getText().toString());
+			//バッファーのデータをファイルに書き込む
+			saveText.flush();
+			//出力ストリームを閉じる
+			outputStream.close();
+		    }
+		    catch(Exception e){
+		    }    
+	    
+	    CharSequence CS6 = varEditText6.getText();
+	    String string6 = CS6.toString(); 
+        
+	    //Toast.makeText(Activity_Sub053.this, string6, Toast.LENGTH_LONG).show();	           
+	    
+	    if (string6.equals("s")){
+	    	
+        	/*------------------------------------------- 
+        	//Toast.makeText(Activity_Sub053.this, "writein", Toast.LENGTH_LONG).show(); 
+
+		    //インテントに、この画面と、遷移する別の画面を指定する
+	        Intent intent = new Intent(Activity_Sub053.this,Activity_Gps053.class);
+            
+            //Toast.makeText(Activity_Sub053.this, "Sub1", Toast.LENGTH_LONG).show(); 
+
+            //インテントで指定した別の画面に遷移する
+            startActivity(intent);   
+            -----------------------------------------------*/      	
+        }
+	    
+	    CharSequence CS7 = varEditText7.getText();
+	    String string7 = CS7.toString();
+	    
+	    //Toast.makeText(Activity_Sub053.this, CS7, Toast.LENGTH_LONG).show(); 
+	    
+	    if (string7.equals("s")){        	
+        	/*------------------------------------------
+		    //インテントに、この画面と、遷移する別の画面を指定する
+	        Intent intent = new Intent(Activity_Sub053.this,Activity_Gps053.class);	        
+                        
+            //Toast.makeText(Activity_Sub053.this, "Sub2", Toast.LENGTH_LONG).show();
+
+            //インテントで指定した別の画面に遷移する
+            startActivity(intent);
+            ---------------------------------------------*/	    	
+        }
+	    
+	    //Toast.makeText(Activity_Sub053.this, "writeout", Toast.LENGTH_LONG).show();
+	    
+	    /*
+	    //add start
+        try{
+
+            //5秒間停止させます。
+            Thread.sleep(10000);               
+        }
+        catch(InterruptedException e){}
+        //add end        
+         */
+	    
+	    if (string6.equals("s")){
+	    Intent intent62 = getIntent();	
+	    String S62 = intent62.getStringExtra("s3");
+	    varTextView62.setText(S62);
+	    
+	    //Toast.makeText(Activity_Sub053.this, "S62", Toast.LENGTH_LONG).show();
+	    //Toast.makeText(Activity_Sub053.this, S62, Toast.LENGTH_LONG).show();
+	    
+	    try{
+		    //出力ストリームの生成
+		    FileOutputStream outputStream = openFileOutput("CramSchool.txt",Context.MODE_PRIVATE);
+		    //出力ストリームのバッファーリング
+		    BufferedWriter saveText = new BufferedWriter(new OutputStreamWriter(outputStream));
+		    //エディットテキストの文字列をバッファーに格納する
+		    saveText.write(varTextView62.getText().toString());				
+		    //バッファーのデータをファイルに書き込む
+		    saveText.flush();							
+		    //出力ストリームを閉じる
+		    outputStream.close();
+	        }
+	        catch(Exception e){
+	        }
+	    }
+
+	    
+	    //Toast.makeText(Activity_Sub053.this, "S72", Toast.LENGTH_LONG).show();
+	    //Toast.makeText(Activity_Sub053.this, S72, Toast.LENGTH_LONG).show();
+	    
+	    if (string7.equals("s")){
+		    Intent intent72 = getIntent();	
+		    String S72 = intent72.getStringExtra("s3");
+		    varTextView72.setText(S72);
+	    try{
+		    //出力ストリームの生成
+		    FileOutputStream outputStream = openFileOutput("Piano.txt",Context.MODE_PRIVATE);
+		    //出力ストリームのバッファーリング
+		    BufferedWriter saveText = new BufferedWriter(new OutputStreamWriter(outputStream));
+		    //エディットテキストの文字列をバッファーに格納する
+		    saveText.write(varTextView72.getText().toString());
+		    //バッファーのデータをファイルに書き込む
+		    saveText.flush();
+		    //出力ストリームを閉じる
+		    outputStream.close();
+	        }
+	        catch(Exception e){
+	        }
+	    }
+	    
+        }
+		//戻るボタンが押された時の処理		
+        else if(v == varButton3){
+            //この画面を終了
+            finish();
+		}
+	}
+}
+

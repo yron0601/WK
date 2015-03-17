@@ -1,0 +1,572 @@
+package com.example.hb053;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.graphics.Color;
+import android.widget.AdapterView;  
+import android.widget.ArrayAdapter; 
+import android.widget.LinearLayout;  
+import android.widget.Spinner;
+import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
+
+//ActivityにOnClickListenerを設定しておく
+public class HB053Activity extends Activity implements OnClickListener{
+	
+	//見出し（連絡メール）
+	TextView varTextView1;
+	//メール区分
+	TextView varTextView2;
+	//宛名
+	TextView varTextView3;
+	//習い事
+	TextView varTextView4;
+	//遅れ理由
+	TextView varTextView5;
+	//遅れ時間
+	TextView varTextView6;
+	
+	//送信ボタン
+	Button varButton1;
+	//初期設定
+	Button varButton2;
+	
+	//@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		
+		//LinearLayoutをインスタンス化する
+		LinearLayout varLayout1 = new LinearLayout(this);
+		varLayout1.setOrientation(LinearLayout.VERTICAL);
+		//メール区分
+		LinearLayout varLayout2 = new LinearLayout(this);		
+		//varLayout2.setOrientation(LinearLayout.HORIZONTAL);　　＊デフォルト　横並び
+		//宛名
+		LinearLayout varLayout3 = new LinearLayout(this);
+		//習い事
+		LinearLayout varLayout4 = new LinearLayout(this);
+		//遅れ理由
+		LinearLayout varLayout5 = new LinearLayout(this);
+		//遅れ時間
+		LinearLayout varLayout6= new LinearLayout(this);
+		//ボタン
+		LinearLayout varLayout7= new LinearLayout(this);
+		setContentView(varLayout1);
+
+		//Buttonのインスタンスを生成する	
+		//送信ボタン
+        varButton1 = new Button(this);
+        //初期設定ボタン
+        varButton2 = new Button(this); 
+        
+		//LayoutParams(幅,高さ)
+		//setMargins(左,上,右､下)
+        //送信ボタン
+		LayoutParams parms81 = new LayoutParams(200,100);		
+		parms81.setMargins(100,0,0,0);		
+		varButton1.setLayoutParams(parms81);
+		//初期設定ボタン
+		LayoutParams parms82 = new LayoutParams(250,100);		
+		parms82.setMargins(50,0,0,0);		
+		varButton2.setLayoutParams(parms82);		
+   
+		//Buttonに表示するテキストを設定		
+        varButton1.setText("送信");
+		varButton2.setText("初期設定");        
+	
+		//TextViewのインスタンスを生成する
+		//見出し
+		varTextView1 = new TextView(this);
+		//メール区分
+		varTextView2 = new TextView(this);
+		//宛名
+		varTextView3 = new TextView(this);
+		//習い事
+		varTextView4 = new TextView(this);
+		//遅れ理由
+		varTextView5 = new TextView(this);
+		//遅れ時間
+		varTextView6 = new TextView(this);
+		
+        //見出しの設定
+		//LayoutParams(幅,高さ)
+		//setMargins(左,上,右､下)
+		LayoutParams parms1 = new LayoutParams(500,60);		
+		parms1.setMargins(200,0,0,0);		
+		varTextView1.setLayoutParams(parms1);		
+		varTextView1.setText("連絡メール");	
+        varTextView1.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView1.setTextSize(20);
+        //メール区分の設定     
+		LayoutParams parms21 = new LayoutParams(250,80);		
+		parms21.setMargins(0,0,0,0);		
+		varTextView2.setLayoutParams(parms21);		
+		varTextView2.setText("・メール区分:");	
+        varTextView2.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView2.setTextSize(15);
+        //varTextView2.setBackgroundColor(Color.rgb(175, 238, 238));
+        //宛名の設定     
+		LayoutParams parms31 = new LayoutParams(200,80);		
+		parms31.setMargins(0,0,0,0);		
+		varTextView3.setLayoutParams(parms31);		
+		varTextView3.setText("・宛名:");	
+        varTextView3.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView3.setTextSize(15);
+        //習い事の設定     
+		LayoutParams parms41 = new LayoutParams(200,80);		
+		parms41.setMargins(0,0,0,0);		
+		varTextView4.setLayoutParams(parms41);		
+		varTextView4.setText("・習い事:");	
+        varTextView4.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView4.setTextSize(15);
+        //遅れ理由の設定     
+		LayoutParams parms51 = new LayoutParams(250,80);		
+		parms51.setMargins(0,0,0,0);		
+		varTextView5.setLayoutParams(parms51);		
+		varTextView5.setText("・遅れ理由:");	
+        varTextView5.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView5.setTextSize(15);
+        //遅れ時間の設定     
+		LayoutParams parms61 = new LayoutParams(250,80);		
+		parms61.setMargins(0,0,0,0);		
+		varTextView6.setLayoutParams(parms61);		
+		varTextView6.setText("・遅れ時間:");	
+        varTextView6.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView6.setTextSize(15);
+		
+		//ViewにTextViewを追加する
+        //見出し
+		varLayout1.addView(varTextView1);
+		//メール区分
+		varLayout2.addView(varTextView2);		
+		//宛名
+		varLayout3.addView(varTextView3);		
+		//習い事
+		varLayout4.addView(varTextView4);
+		//遅れ理由
+		varLayout5.addView(varTextView5);		
+		//遅れ時間
+		varLayout6.addView(varTextView6);		
+		
+		//メール区分　start 
+        Spinner spinner2 = new Spinner(this); 
+        LayoutParams parms22 = new LayoutParams(200,100);		
+		parms22.setMargins(0,0,0,0);
+		spinner2.setLayoutParams(parms22);
+		varLayout2.addView(spinner2);         
+
+        ArrayAdapter adapter2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item); 
+        
+        adapter2.add("着いた"); 
+        adapter2.add("帰る　"); 
+        adapter2.add("遅れる"); 
+
+        spinner2.setAdapter(adapter2);         
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { 
+
+            @Override 
+            public void
+            onItemSelected(AdapterView<?> parent,
+                    View view, int position, long id) { 
+            	
+                Spinner spinner2 = (Spinner) parent; 
+                String item2 = (String) spinner2.getSelectedItem(); 
+                int n = spinner2.getSelectedItemPosition();
+                                
+                Intent intent2 = getIntent();
+                intent2.putExtra("2",item2);                
+                //Toast.makeText(HB051Activity.this, item2, Toast.LENGTH_LONG).show();                            
+                
+            }
+
+			//@Override
+			//必須構文
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}			
+			}); 
+        //メール区分　end		
+		
+		//宛名　start
+        Spinner spinner3 = new Spinner(this); 
+        LayoutParams parms32 = new LayoutParams(200,100);		
+		parms32.setMargins(0,0,0,0);
+		spinner3.setLayoutParams(parms32);
+        varLayout3.addView(spinner3); 
+
+        ArrayAdapter adapter3 = new ArrayAdapter(this,android.R.layout.simple_spinner_item); 
+        
+        adapter3.add("母"); 
+        adapter3.add("父");           
+
+        spinner3.setAdapter(adapter3);         
+        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { 
+
+            @Override 
+            public void
+            onItemSelected(AdapterView<?> parent,
+                    View view, int position, long id) { 
+            	
+                Spinner spinner3 = (Spinner) parent; 
+                String item3 = (String) spinner3.getSelectedItem(); 
+                
+                Intent intent3 = getIntent();
+                intent3.putExtra("3",item3);
+            }
+			//@Override
+			//必須構文
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}			
+			}); 
+        //宛名　end
+        
+		//習い事　start
+        Spinner spinner4 = new Spinner(this); 
+        LayoutParams parms42 = new LayoutParams(200,100);		
+ 		parms42.setMargins(0,0,0,0);
+ 		spinner4.setLayoutParams(parms42);
+        varLayout4.addView(spinner4); 
+
+        ArrayAdapter adapter4 = new ArrayAdapter(this,android.R.layout.simple_spinner_item); 
+        
+        adapter4.add("塾"); 
+        adapter4.add("ピアノ");           
+
+        spinner4.setAdapter(adapter4);         
+        spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { 
+
+            @Override 
+            public void
+            onItemSelected(AdapterView<?> parent,
+                    View view, int position, long id) { 
+            	
+                Spinner spinner4 = (Spinner) parent; 
+                String item4 = (String) spinner4.getSelectedItem(); 
+                
+                Intent intent4 = getIntent();
+                intent4.putExtra("4",item4);
+            }
+			//@Override
+			//必須構文
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}			
+			}); 
+        //習い事　end
+        
+        //遅れ理由　start
+        Spinner spinner5 = new Spinner(this);
+        LayoutParams parms52 = new LayoutParams(450,100);		
+ 		parms52.setMargins(0,0,0,0);
+ 		spinner5.setLayoutParams(parms52);
+        varLayout5.addView(spinner5); 
+
+        ArrayAdapter adapter5 = new ArrayAdapter(this,android.R.layout.simple_spinner_item); 
+        
+        adapter5.add("　"); 
+        adapter5.add("交通機関"); 
+        adapter5.add("お店立ち寄りによる"); 
+        adapter5.add("友達との話による"); 
+        adapter5.add("質問による");
+        adapter5.add("その他");
+
+        spinner5.setAdapter(adapter5);         
+        spinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { 
+
+            @Override 
+            public void
+            onItemSelected(AdapterView<?> parent,
+                    View view, int position, long id) { 
+            	
+                Spinner spinner5 = (Spinner) parent; 
+                String item5 = (String) spinner5.getSelectedItem(); 
+                
+                Intent intent5 = getIntent();
+                intent5.putExtra("5",item5);
+            }
+			//@Override
+			//必須構文
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}			
+			}); 
+        //遅れ理由　end         
+        
+		//遅れ時間　start
+        Spinner spinner6 = new Spinner(this); 
+        LayoutParams parms62 = new LayoutParams(300,100);		
+ 		parms62.setMargins(0,0,0,0);
+ 		spinner6.setLayoutParams(parms62);
+        varLayout6.addView(spinner6); 
+
+        ArrayAdapter adapter6 = new ArrayAdapter(this,android.R.layout.simple_spinner_item); 
+        
+        adapter6.add("　"); 
+        adapter6.add("10分"); 
+        adapter6.add("20分");
+        adapter6.add("30分"); 
+        adapter6.add("40分"); 
+        adapter6.add("50分"); 
+        adapter6.add("60分"); 
+        adapter6.add("1時間以上"); 
+
+        spinner6.setAdapter(adapter6);         
+        spinner6.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { 
+
+            @Override 
+            public void
+            onItemSelected(AdapterView<?> parent,
+                    View view, int position, long id) { 
+            	
+                Spinner spinner6 = (Spinner) parent; 
+                String item6 = (String) spinner6.getSelectedItem(); 
+                
+                Intent intent6 = getIntent();
+                intent6.putExtra("6",item6);
+            }
+			//@Override
+			//必須構文
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}			
+			}); 
+        //遅れ時間　end 
+        
+        varLayout1.addView(varLayout2);
+        varLayout1.addView(varLayout3);
+        varLayout1.addView(varLayout4);
+        varLayout1.addView(varLayout5);
+        varLayout1.addView(varLayout6);
+        
+
+        
+        //ButtonをLinearLayoutに追加してEventListenerを取得する		
+        varLayout7.addView(varButton1);
+		varButton1.setOnClickListener(this);
+        varLayout7.addView(varButton2);
+		varButton2.setOnClickListener(this);
+		varLayout1.addView(varLayout7);    
+	}	
+	
+	@Override 
+	public void onClick(View v){
+		//送信ボタンが押された時の処理		
+        if(v == varButton1){
+            try{
+    			//入力ストリームの生成
+    			FileInputStream imputStream = openFileInput("Mother.txt");
+    			//入力ストリームのバッファーリング
+    			BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+    			//シーケンスオブジェクトの生成
+    			StringBuffer sequence31 = new StringBuffer();
+    			String readText;
+    			//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+    			while((readText = tmpBuffere.readLine()) != null){
+    				sequence31.append(readText);
+    			}
+    			//シーケンスに格納された文字列をエディットテキストに表示する
+    			//varEditText2.setText(sequence1);				
+    			String text31 = sequence31.toString();
+    			//Toast.makeText(HB052Activity.this, text31, Toast.LENGTH_LONG).show();
+    			
+                Intent intent31 = getIntent();
+                intent31.putExtra("31",text31);
+    			
+    			//入力ストリームを閉じる			
+    			imputStream.close();
+    		}
+    		catch (Exception e){
+    		}
+            
+            try{
+    			//入力ストリームの生成
+    			FileInputStream imputStream = openFileInput("Father.txt");
+    			//入力ストリームのバッファーリング
+    			BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+    			//シーケンスオブジェクトの生成
+    			StringBuffer sequence32 = new StringBuffer();
+    			String readText;
+    			//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+    			while((readText = tmpBuffere.readLine()) != null){
+    				sequence32.append(readText);
+    			}
+    			//シーケンスに格納された文字列をエディットテキストに表示する
+    			//varEditText2.setText(sequence32);
+    			//Toast.makeText(HB052Activity.this, readText, Toast.LENGTH_LONG).show();
+    			String text32 = sequence32.toString();
+                Intent intent32 = getIntent();
+                intent32.putExtra("32",text32);
+    			
+    			//入力ストリームを閉じる			
+    			imputStream.close();
+    		}
+    		catch (Exception e){
+    		}
+            try{
+    			//入力ストリームの生成
+    			FileInputStream imputStream = openFileInput("CramSchool.txt");
+    			//入力ストリームのバッファーリング
+    			BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+    			//シーケンスオブジェクトの生成
+    			StringBuffer sequence41 = new StringBuffer();
+    			String readText;
+    			//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+    			while((readText = tmpBuffere.readLine()) != null){
+    				sequence41.append(readText);
+    			}
+    			//シーケンスに格納された文字列をエディットテキストに表示する
+    			//varEditText2.setText(sequence1);				
+    			String text41 = sequence41.toString();
+    			//Toast.makeText(HB052Activity.this, text31, Toast.LENGTH_LONG).show();
+    			
+                Intent intent41 = getIntent();
+                intent41.putExtra("41",text41);
+    			
+    			//入力ストリームを閉じる			
+    			imputStream.close();
+    		}
+    		catch (Exception e){
+    		}
+            
+            try{
+    			//入力ストリームの生成
+    			FileInputStream imputStream = openFileInput("Piano.txt");
+    			//入力ストリームのバッファーリング
+    			BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+    			//シーケンスオブジェクトの生成
+    			StringBuffer sequence42 = new StringBuffer();
+    			String readText;
+    			//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+    			while((readText = tmpBuffere.readLine()) != null){
+    				sequence42.append(readText);
+    			}
+    			//シーケンスに格納された文字列をエディットテキストに表示する
+    			//varEditText2.setText(sequence32);
+    			//Toast.makeText(HB052Activity.this, readText, Toast.LENGTH_LONG).show();
+    			String text42 = sequence42.toString();
+                Intent intent42 = getIntent();
+                intent42.putExtra("42",text42);
+    			
+    			//入力ストリームを閉じる			
+    			imputStream.close();
+    		}
+    		catch (Exception e){
+    		}
+            
+            try{
+    			//入力ストリームの生成
+    			FileInputStream imputStream = openFileInput("Sender.txt");
+    			//入力ストリームのバッファーリング
+    			BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+    			//シーケンスオブジェクトの生成
+    			StringBuffer sequence8 = new StringBuffer();
+    			String readText;
+    			//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+    			while((readText = tmpBuffere.readLine()) != null){
+    				sequence8.append(readText);
+    			}
+    			//シーケンスに格納された文字列をエディットテキストに表示する
+    			//varEditText2.setText(sequence32);
+    			//Toast.makeText(HB052Activity.this, readText, Toast.LENGTH_LONG).show();
+    			String text8 = sequence8.toString();
+                Intent intent8 = getIntent();
+                intent8.putExtra("8",text8);
+    			
+    			//入力ストリームを閉じる			
+    			imputStream.close();
+    		}
+    		catch (Exception e){
+    		}
+        	
+        	Intent intent2 = getIntent();
+        	String text2 = intent2.getStringExtra("2");        	
+        	        	
+        	String subject = text2 + "メール";        	
+        	
+        	//宛名　母　or　父
+        	Intent intent3 = getIntent();
+        	String text3 = intent3.getStringExtra("3");
+        	//母アドレス
+        	Intent intent31 = getIntent();
+        	String text31= intent31.getStringExtra("31");
+        	//父アドレス
+        	Intent intent32 = getIntent();        	
+        	String text32 = intent32.getStringExtra("32");
+        	//習い事　塾　or　ピアノ
+           	Intent intent4 = getIntent();           	
+        	String text4 = intent4.getStringExtra("4");
+        	//塾GPS
+        	Intent intent41 = getIntent();
+        	String text41= intent31.getStringExtra("41");
+        	//ピアノGPS
+        	Intent intent42 = getIntent();        	
+        	String text42 = intent32.getStringExtra("42");
+        	//遅れ理由
+           	Intent intent5 = getIntent();           	
+        	String text5 = intent5.getStringExtra("5");
+        	//遅れ時間
+           	Intent intent6 = getIntent();           	
+        	String text6 = intent6.getStringExtra("6");
+        	//差出人
+        	Intent intent8 = getIntent();        	
+        	String text8 = intent8.getStringExtra("8");
+        	
+        	//Toast.makeText(HB052Activity.this, text32, Toast.LENGTH_LONG).show();
+        	        	
+        	String text20;
+    	    if(text2 == "着いた"){						
+    	text20 = text3 + "へ" + "\n" + text4 + "に着きました。【" + text4  + "】" + "\n" + text8 + "より";	
+		    } else if(text2 == "帰る　"){	
+		text20 = text3 + "へ" + "\n" + text4 + "を出ました。【" + text4  + "】" +  "\n" + text8 + "より";	 
+		    } 
+		    else{	
+		text20 = text3 + "へ" + "\n" + text5 + "遅れのため" + text6  + "遅れます。【" + text4  + "】" +  "\n" + text8 + "より";	 
+		    } 
+    	           	
+        	//Toast.makeText(HB052Activity.this, text20, Toast.LENGTH_LONG).show();        	
+        	
+            Intent intent = new Intent();  
+    	    intent.setAction(Intent.ACTION_SEND); 
+    	    intent.setType("text/Gmail"); 
+    	    if(text3 == "母"){						
+    	    	intent.putExtra(Intent.EXTRA_EMAIL, new String[]{text31});	
+		    } else{	
+		    	intent.putExtra(Intent.EXTRA_EMAIL, new String[]{text32});	 
+		    } 
+        	intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+ 
+    	    intent.putExtra(Intent.EXTRA_TEXT, text20);
+           
+            startActivity(intent);            
+		}
+		//初期設定ボタンが押された時の処理		
+        else if(v == varButton2){
+		    //インテントに、この画面と、遷移する別の画面を指定する
+	        Intent intent = new Intent(HB053Activity.this,Activity_Sub053.class);
+
+            //インテントで指定した別の画面に遷移する
+            startActivity(intent);        
+        }
+        
+	}
+	
+}

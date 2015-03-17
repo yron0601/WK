@@ -1,0 +1,260 @@
+package com.example.hb053;  
+  
+import android.app.Activity;  
+import android.content.Context;  
+import android.content.Intent;
+import android.location.Criteria;  
+import android.location.Location;  
+import android.location.LocationListener;  
+import android.location.LocationManager;  
+import android.os.Bundle;  
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
+import android.view.View;
+import java.math.BigDecimal;
+  
+public class Activity_Gps053 extends Activity  {  
+    /** Called when the activity is first created. */
+	
+	TextView varTextView99;
+    TextView varTextView62;
+    TextView varTextView72;    
+	
+    @Override  
+    public void onCreate(Bundle savedInstanceState) {  
+        super.onCreate(savedInstanceState); 
+        /*
+        LinearLayout varLayout1 = new LinearLayout(this);
+        varLayout1.setOrientation(LinearLayout.VERTICAL); 
+        setContentView(varLayout1);       
+        
+        varTextView99 = new TextView(this);
+        varTextView62 = new TextView(this);
+        varTextView72 = new TextView(this);
+        
+        
+        LayoutParams parms62 = new LayoutParams(100,80);		
+		parms62.setMargins(0,0,0,0);		
+		varTextView62.setLayoutParams(parms62);
+		LayoutParams parms72 = new LayoutParams(100,80);		
+		parms72.setMargins(0,0,0,0);		
+		varTextView62.setLayoutParams(parms72);		
+        
+        
+        varLayout1.addView(varTextView99);
+        varLayout1.addView(varTextView62);
+        varLayout1.addView(varTextView72);
+        */
+                  
+        ///////////////////////////////////  
+        // GPS   
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);  
+  
+        //位置情報の要求条件を指定する  
+        Criteria criteria = new Criteria();  
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);    //精度を指定する  
+        criteria.setAltitudeRequired(false);                //標高を取得するかどうか  
+        criteria.setBearingRequired(false);                //進行方向を取得するかどうか  
+        criteria.setCostAllowed(false);                    //取得費用がかかることを許可するかどうか  
+        criteria.setPowerRequirement(Criteria.POWER_LOW);    //消費電力量を指定する  
+        criteria.setSpeedRequired(false);                //速度を取得するかどうか  
+          
+        //指定する取得条件でプロバイダーを取得  
+        String provider = locationManager.getBestProvider(criteria, true); 
+        
+        //Toast.makeText(HB021Activity.this, provider, Toast.LENGTH_LONG).show();
+          
+        //ロケーションリスナーを設定  
+          locationManager.requestLocationUpdates(provider,   
+                1000,    //リスナーに通知する最小時間間隔   
+                1,         //リスナーに通知する最小距離間隔  
+                locationListener);    //リスナー
+          
+          //Toast.makeText(Activity_Gps053.this, "no", Toast.LENGTH_LONG).show();
+          
+          Toast.makeText(Activity_Gps053.this, "Gps1", Toast.LENGTH_LONG).show();
+          
+          /*------------------------------------------------
+          try{
+
+              //5秒間停止させます。
+              Thread.sleep(10000);               
+          }
+          catch(InterruptedException e){}
+        
+          //Toast.makeText(Activity_Gps053.this, "no", Toast.LENGTH_LONG).show();
+          
+          finish();
+          -----------------------------------------------*/
+           
+    }     
+  
+    //位置情報を画面に表示  
+    private void showLocation(Location location) {
+    	
+    	/*------------------------------------
+        try{
+
+            //5秒間停止させます。
+            Thread.sleep(1000);               
+        }
+       catch(InterruptedException e){}
+       -------------------------------------*/
+    	          
+        StringBuffer sb1 = new StringBuffer();
+        StringBuffer sb2 = new StringBuffer();
+        
+        //Toast.makeText(HB021Activity.this, sb1, Toast.LENGTH_LONG).show();
+          
+        if (location != null) {
+        	sb1.append(location.getLatitude());
+        	sb2.append(location.getLongitude());        	
+        	
+            //sb1.append("緯度：").append(location.getLatitude());  
+            //sb2.append("経度：").append(location.getLongitude());  
+            //sb.append("精度：").append(location.getAccuracy());  
+            //sb.append("標高：").append(location.getAltitude());  
+            //sb.append("時間：").append(location.getTime());  
+            //sb.append("速度：").append(location.getSpeed());  
+            //sb.append("進行方向：").append(location.getBearing());  
+            //sb.append("プロバイダ：").append(location.getProvider());  
+        } 
+        
+      //Toast.makeText(HB021Activity.this, sb1, Toast.LENGTH_LONG).show();
+        
+        /*--------------------------------------------------
+        varTextView99.setText("GPS取得情報:");
+        varTextView62.setText(sb1.toString());
+        varTextView72.setText(sb2.toString());
+        
+        
+        //文字列の取得
+        String a = sb1.toString();         
+        double db = Double.parseDouble(a);
+        db = db * 3600;        
+        String s1 =String.valueOf(db);
+        //Toast.makeText(Activity_Gps053.this, s1, Toast.LENGTH_LONG).show();         
+        db = Math.round(db);
+        String s2 =String.valueOf(db);        
+        //System.out.println("double:" + db);        
+        //Toast.makeText(Activity_Gps053.this, s2, Toast.LENGTH_LONG).show();
+        ----------------------------------------------------*/ 
+
+       //文字列の取得（緯度）
+        String b1 = sb1.toString();
+                
+        //ダブル型への変換
+        double d1 = Double.parseDouble(b1);
+        /*-----------------------
+        //秒単位に変換
+        d1 = d1 * 3600;
+        //小数第1位を四捨五入
+        d1 = Math.round(d1);
+        d1 = d1/3600;
+        -------------------------*/
+
+        BigDecimal bd1 = new BigDecimal(d1);
+        //小数第3位を四捨五入
+        BigDecimal bd11 = bd1.setScale(4, BigDecimal.ROUND_HALF_UP); 
+        //文字列への変換 
+        //String s1 =String.valueOf(db11); NG
+        String s1  = bd11.toString(); 
+
+        //Toast.makeText(Activity_Gps053.this, s1, Toast.LENGTH_LONG).show();
+        
+        //文字列の取得（経度）
+        String b2 = sb2.toString(); 
+        
+        //Toast.makeText(Activity_Gps053.this, sb2, Toast.LENGTH_LONG).show();        
+                
+        //ダブル型への変換
+        double d2 = Double.parseDouble(b2);
+        /*------------------------------------
+        //秒単位に変換
+        d2 = d2 * 3600;
+        //小数第1位を四捨五入
+        d2 = Math.round(d2);
+        d2 = d2/3600;
+        ------------------------------------*/
+
+        BigDecimal bd2 = new BigDecimal(d2);
+        //小数第3位を四捨五入
+        BigDecimal bd21 = bd2.setScale(4, BigDecimal.ROUND_HALF_UP); 
+        //文字列への変換 
+        //String s2 =String.valueOf(db21);
+        String s2  = bd21.toString(); 
+
+        //Toast.makeText(Activity_Gps053.this, s2, Toast.LENGTH_LONG).show();
+        
+        String s3 = s1 + "  " + s2;
+        
+        Toast.makeText(Activity_Gps053.this, s3, Toast.LENGTH_LONG).show();
+        
+        /*
+        Intent intent = getIntent();
+        intent.putExtra("s1",s1);
+        intent.putExtra("s2",s2);
+        intent.putExtra("s3",s3);
+        */
+        
+        //インテントに、この画面と、遷移する別の画面を指定する
+        Intent intent = new Intent(Activity_Gps053.this,Activity_Sub053.class);
+        
+        //Intent intent8 = getIntent();
+        intent.putExtra("s1",s1);
+        intent.putExtra("s2",s2);
+        intent.putExtra("s3",s3);
+        
+        Toast.makeText(Activity_Gps053.this, "Gps2", Toast.LENGTH_LONG).show();        
+
+        //インテントで指定した別の画面に遷移する
+        startActivity(intent); 
+      
+  	    //Intent intent = getIntent();        	
+  	    //String text = intent.getStringExtra("s");
+  	
+  	    //Toast.makeText(Activity_Gps053.this, "s", Toast.LENGTH_LONG).show();
+  	    //Toast.makeText(Activity_Gps053.this, text, Toast.LENGTH_LONG).show();  	  
+
+  	
+  	/*------------------------------------
+    try{
+
+        //5秒間停止させます。
+        Thread.sleep(3000);               
+    }
+    catch(InterruptedException e){} 
+    
+    //Intent intent = new Intent();        
+    Intent intent = getIntent();
+    intent.putExtra("s1",s1);
+    intent.putExtra("s2",s2);
+    intent.putExtra("s3",s3);
+        
+  	finish();  	
+  	------------------------------------*/ 
+    }
+   
+   
+    private LocationListener locationListener = new LocationListener() {  
+    	
+        //プロバイダ・ステータスが変更された時に呼び出される  
+        public void onStatusChanged(String provider, int status, Bundle extras) {              
+        }          
+        //プロバイダが利用可能になった時に呼び出される  
+        public void onProviderEnabled(String provider) {  
+        }          
+        //プロバイダが利用不可になった時に呼び出される  
+        public void onProviderDisabled(String provider) {  
+        }           
+        //位置情報が変更されたときに呼び出される  
+        public void onLocationChanged(Location location) {  
+            showLocation(location);  
+        } 
+              
+   }; 
+   
+   
+}  

@@ -1,0 +1,1455 @@
+package com.example.hb057;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.graphics.Color;
+import android.widget.AdapterView;  
+import android.widget.ArrayAdapter; 
+import android.widget.LinearLayout;  
+import android.widget.Spinner;
+import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
+
+//ActivityにOnClickListenerを設定しておく
+public class HB057Activity extends Activity implements OnClickListener{
+	
+	//見出し（連絡メール）
+	TextView varTextView1;
+	//メール区分
+	TextView varTextView2;
+	//宛名
+	TextView varTextView3;
+	//習い事
+	TextView varTextView4;
+	//遅れ理由
+	TextView varTextView5;
+	//遅れ時間
+	TextView varTextView6;
+	
+	//メール区分
+	String item2;
+	//宛名
+	String item3;
+	//習い事
+	String item4;
+	//遅れ理由
+	String item5;
+	//遅れ時間
+	String item6;
+	
+	//表題
+	String text10;
+	//本文
+	String text20;
+	String text21;
+	//アドレス
+	String text30;
+	//差出人より
+	String text80;	
+	//名前1
+	String text31;
+	//アドレス1
+	String text32;
+	//名前2
+	String text41;
+	//アドレス2
+	String text42;
+	//差出人
+	String text8;
+	//宛名1
+	String string31;
+	//宛名2
+	String string41;	
+	
+	//送信ボタン
+	Button varButton1;
+	//初期設定
+	Button varButton2;
+	//送信（住所付）ボタン
+	Button varButton3;	
+	
+	//@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		
+		//LinearLayoutをインスタンス化する
+		LinearLayout varLayout1 = new LinearLayout(this);
+		varLayout1.setOrientation(LinearLayout.VERTICAL);
+		//メール区分
+		LinearLayout varLayout2 = new LinearLayout(this);		
+		//varLayout2.setOrientation(LinearLayout.HORIZONTAL);　　＊デフォルト　横並び
+		//宛名
+		LinearLayout varLayout3 = new LinearLayout(this);
+		//習い事
+		LinearLayout varLayout4 = new LinearLayout(this);
+		//遅れ理由
+		LinearLayout varLayout5 = new LinearLayout(this);
+		//遅れ時間
+		LinearLayout varLayout6 = new LinearLayout(this);
+		//ボタン
+		LinearLayout varLayout7 = new LinearLayout(this);
+		setContentView(varLayout1);
+
+		//Buttonのインスタンスを生成する	
+		//送信ボタン
+        varButton1 = new Button(this);
+        //初期設定ボタン
+        varButton2 = new Button(this);
+        //送信（住所付）ボタン
+        varButton3 = new Button(this);
+
+        
+		//LayoutParams(幅,高さ)
+		//setMargins(左,上,右､下)
+        //送信ボタン
+		LayoutParams parms71 = new LayoutParams(150,100);		
+		parms71.setMargins(30,0,0,0);		
+		varButton1.setLayoutParams(parms71);
+		//初期設定ボタン
+		LayoutParams parms72 = new LayoutParams(220,100);		
+		parms72.setMargins(30,0,0,0);		
+		varButton2.setLayoutParams(parms72);
+		//送信（住所付）ボタン
+		LayoutParams parms73 = new LayoutParams(220,100);
+		parms73.setMargins(30,0,0,0);
+		varButton3.setLayoutParams(parms73);
+   
+		//Buttonに表示するテキストを設定		
+        varButton1.setText("送信");
+        varButton1.setTextSize(15);
+		varButton2.setText("初期設定");
+		varButton2.setTextSize(15);
+		varButton3.setText("位置情報");
+		varButton3.setTextSize(15);
+	
+		//TextViewのインスタンスを生成する
+		//見出し
+		varTextView1 = new TextView(this);
+		//メール区分
+		varTextView2 = new TextView(this);
+		//宛名
+		varTextView3 = new TextView(this);
+		//習い事
+		varTextView4 = new TextView(this);
+		//遅れ理由
+		varTextView5 = new TextView(this);
+		//遅れ時間
+		varTextView6 = new TextView(this);
+		
+        //見出しの設定
+		//LayoutParams(幅,高さ)
+		//setMargins(左,上,右､下)
+		LayoutParams parms1 = new LayoutParams(500,60);		
+		parms1.setMargins(200,0,0,0);		
+		varTextView1.setLayoutParams(parms1);		
+		varTextView1.setText("連絡メール");	
+        varTextView1.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView1.setTextSize(20);
+        //メール区分の設定     
+		LayoutParams parms21 = new LayoutParams(250,80);		
+		parms21.setMargins(0,0,0,0);		
+		varTextView2.setLayoutParams(parms21);		
+		varTextView2.setText("・メール区分:");	
+        varTextView2.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView2.setTextSize(15);
+        //varTextView2.setBackgroundColor(Color.rgb(175, 238, 238));
+        //宛名の設定     
+		LayoutParams parms31 = new LayoutParams(200,80);		
+		parms31.setMargins(0,0,0,0);		
+		varTextView3.setLayoutParams(parms31);		
+		varTextView3.setText("・宛名:");	
+        varTextView3.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView3.setTextSize(15);
+        //習い事の設定     
+		LayoutParams parms41 = new LayoutParams(200,80);		
+		parms41.setMargins(0,0,0,0);		
+		varTextView4.setLayoutParams(parms41);		
+		varTextView4.setText("・習い事:");	
+        varTextView4.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView4.setTextSize(15);
+        //遅れ理由の設定     
+		LayoutParams parms51 = new LayoutParams(250,80);		
+		parms51.setMargins(0,0,0,0);		
+		varTextView5.setLayoutParams(parms51);		
+		varTextView5.setText("・遅れ理由:");	
+        varTextView5.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView5.setTextSize(15);
+        //遅れ時間の設定     
+		LayoutParams parms61 = new LayoutParams(250,80);		
+		parms61.setMargins(0,0,0,0);		
+		varTextView6.setLayoutParams(parms61);		
+		varTextView6.setText("・遅れ時間:");	
+        varTextView6.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView6.setTextSize(15);
+		
+		//ViewにTextViewを追加する
+        //見出し
+		varLayout1.addView(varTextView1);
+		//メール区分
+		varLayout2.addView(varTextView2);		
+		//宛名
+		varLayout3.addView(varTextView3);		
+		//習い事
+		varLayout4.addView(varTextView4);
+		//遅れ理由
+		varLayout5.addView(varTextView5);		
+		//遅れ時間
+		varLayout6.addView(varTextView6);		
+		
+		//メール区分　start 
+        Spinner spinner2 = new Spinner(this); 
+        LayoutParams parms22 = new LayoutParams(200,100);		
+		parms22.setMargins(0,0,0,0);
+		spinner2.setLayoutParams(parms22);
+		varLayout2.addView(spinner2);         
+
+        ArrayAdapter adapter2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item); 
+        
+        adapter2.add("着いた"); 
+        adapter2.add("帰る　"); 
+        adapter2.add("遅れる"); 
+
+        spinner2.setAdapter(adapter2);         
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { 
+
+            @Override 
+            public void
+            onItemSelected(AdapterView<?> parent,
+                    View view, int position, long id) { 
+            	
+                Spinner spinner2 = (Spinner) parent; 
+                
+                item2 = (String) spinner2.getSelectedItem();
+                int n = spinner2.getSelectedItemPosition();                                
+             
+                //Toast.makeText(HB051Activity.this, item2, Toast.LENGTH_LONG).show();   
+            }
+
+			//@Override
+			//必須構文
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}			
+			}); 
+        //メール区分　end		
+		
+		//宛名　start
+        Spinner spinner3 = new Spinner(this); 
+        LayoutParams parms32 = new LayoutParams(200,100);		
+		parms32.setMargins(0,0,0,0);
+		spinner3.setLayoutParams(parms32);
+        varLayout3.addView(spinner3);
+        
+        
+        try{			
+	      //入力ストリームの生成		
+	      FileInputStream imputStream = openFileInput("Name1.txt");		
+	      //入力ストリームのバッファーリング		
+	      BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));		
+	      //シーケンスオブジェクトの生成		
+	      StringBuffer sequence31 = new StringBuffer();		
+	      String readText;		
+	      //バッファーのデータをWhile文を用いて全てシーケンスに読み込む		
+	      while((readText = tmpBuffere.readLine()) != null){		
+		    sequence31.append(readText);	
+	      }		
+	      //シーケンスに格納された文字列をエディットテキストに表示する		
+	      //varEditText2.setText(sequence1);		
+	      string31 = sequence31.toString();		
+	      //Toast.makeText(HB055Activity.this, text31, Toast.LENGTH_LONG).show();            			
+			
+	      //入力ストリームを閉じる		
+	      imputStream.close();		
+	      }		
+	      catch (Exception e){		
+	      }
+        
+        try{			
+	      //入力ストリームの生成		
+	      FileInputStream imputStream = openFileInput("Name2.txt");		
+	      //入力ストリームのバッファーリング		
+	      BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));		
+	      //シーケンスオブジェクトの生成		
+	      StringBuffer sequence41 = new StringBuffer();		
+	      String readText;		
+	      //バッファーのデータをWhile文を用いて全てシーケンスに読み込む		
+	      while((readText = tmpBuffere.readLine()) != null){		
+		    sequence41.append(readText);	
+	      }		
+	      //シーケンスに格納された文字列をエディットテキストに表示する		
+	      //varEditText2.setText(sequence32);		
+	      //Toast.makeText(HB055Activity.this, readText, Toast.LENGTH_LONG).show();		
+	      string41 = sequence41.toString();		
+			
+	      //入力ストリームを閉じる		
+	      imputStream.close();		
+	      }		
+	      catch (Exception e){		
+	      }
+        
+        ArrayAdapter adapter3 = new ArrayAdapter(this,android.R.layout.simple_spinner_item); 
+        
+        //test null　or　0件データだとABEND
+        //string31 = "母";
+        //string31 = "父";        
+        adapter3.add(string31); 
+        adapter3.add(string41);
+        //adapter3.add("母"); 
+        //adapter3.add("父");          
+
+        spinner3.setAdapter(adapter3);         
+        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { 
+
+            @Override 
+            public void
+            onItemSelected(AdapterView<?> parent,
+                    View view, int position, long id) { 
+            	
+                Spinner spinner3 = (Spinner) parent; 
+                
+                item3 = (String) spinner3.getSelectedItem();                
+
+            }
+			//@Override
+			//必須構文
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}			
+			}); 
+        //宛名　end
+        
+		//習い事　start
+        Spinner spinner4 = new Spinner(this); 
+        LayoutParams parms42 = new LayoutParams(200,100);		
+ 		parms42.setMargins(0,0,0,0);
+ 		spinner4.setLayoutParams(parms42);
+        varLayout4.addView(spinner4); 
+
+        ArrayAdapter adapter4 = new ArrayAdapter(this,android.R.layout.simple_spinner_item); 
+        
+        adapter4.add("塾"); 
+        adapter4.add("ピアノ");           
+
+        spinner4.setAdapter(adapter4);         
+        spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { 
+
+            @Override 
+            public void
+            onItemSelected(AdapterView<?> parent,
+                    View view, int position, long id) { 
+            	
+                Spinner spinner4 = (Spinner) parent; 
+                
+                item4 = (String) spinner4.getSelectedItem();                
+
+            }
+			//@Override
+			//必須構文
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}			
+			}); 
+        //習い事　end
+        
+        //遅れ理由　start
+        Spinner spinner5 = new Spinner(this);
+        LayoutParams parms52 = new LayoutParams(450,100);		
+ 		parms52.setMargins(0,0,0,0);
+ 		spinner5.setLayoutParams(parms52);
+        varLayout5.addView(spinner5); 
+
+        ArrayAdapter adapter5 = new ArrayAdapter(this,android.R.layout.simple_spinner_item); 
+        
+        adapter5.add("　"); 
+        adapter5.add("交通機関"); 
+        adapter5.add("お店立ち寄りによる"); 
+        adapter5.add("友達との話による"); 
+        adapter5.add("質問による");
+        adapter5.add("その他");
+
+        spinner5.setAdapter(adapter5);         
+        spinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { 
+
+            @Override 
+            public void
+            onItemSelected(AdapterView<?> parent,
+                    View view, int position, long id) { 
+            	
+                Spinner spinner5 = (Spinner) parent; 
+                 
+                item5 = (String) spinner5.getSelectedItem();
+         
+
+            }
+			//@Override
+			//必須構文
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}			
+			}); 
+        //遅れ理由　end         
+        
+		//遅れ時間　start
+        Spinner spinner6 = new Spinner(this); 
+        LayoutParams parms62 = new LayoutParams(300,100);		
+ 		parms62.setMargins(0,0,0,0);
+ 		spinner6.setLayoutParams(parms62);
+        varLayout6.addView(spinner6); 
+
+        ArrayAdapter adapter6 = new ArrayAdapter(this,android.R.layout.simple_spinner_item); 
+        
+        adapter6.add("　"); 
+        adapter6.add("10分"); 
+        adapter6.add("20分");
+        adapter6.add("30分"); 
+        adapter6.add("40分"); 
+        adapter6.add("50分"); 
+        adapter6.add("60分"); 
+        adapter6.add("1時間以上"); 
+
+        spinner6.setAdapter(adapter6);         
+        spinner6.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { 
+
+            @Override 
+            public void
+            onItemSelected(AdapterView<?> parent,
+                    View view, int position, long id) { 
+            	
+                Spinner spinner6 = (Spinner) parent; 
+                
+                item6 = (String) spinner6.getSelectedItem();                
+
+            }
+			//@Override
+			//必須構文
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+			}			
+			}); 
+        //遅れ時間　end 
+        
+        varLayout1.addView(varLayout2);
+        varLayout1.addView(varLayout3);
+        varLayout1.addView(varLayout4);
+        varLayout1.addView(varLayout5);
+        varLayout1.addView(varLayout6);
+        //varLayout1.addView(varLayout7);
+        
+        //ButtonをLinearLayoutに追加してEventListenerを取得する		
+        varLayout7.addView(varButton1);
+		varButton1.setOnClickListener(this);
+        varLayout7.addView(varButton2);
+		varButton2.setOnClickListener(this);
+        varLayout7.addView(varButton3);
+		varButton3.setOnClickListener(this);
+		varLayout1.addView(varLayout7);    
+	}	
+	
+	@Override 
+	public void onClick(View v){
+		//if(v == varButton1)|(v == varButton2){		
+		//}
+		//送信ボタンが押された時の処理		
+        //if(v == varButton1){
+            try{
+    			//入力ストリームの生成
+    			FileInputStream imputStream = openFileInput("Name1.txt");
+    			//入力ストリームのバッファーリング
+    			BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+    			//シーケンスオブジェクトの生成
+    			StringBuffer sequence31 = new StringBuffer();
+    			String readText;
+    			//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+    			while((readText = tmpBuffere.readLine()) != null){
+    				sequence31.append(readText);
+    			}
+    			//シーケンスに格納された文字列をテキストに表示する
+    			text31 = sequence31.toString();
+    			//Toast.makeText(HB055Activity.this, text31, Toast.LENGTH_LONG).show();
+    			
+    			//入力ストリームを閉じる			
+    			imputStream.close();
+    		}
+    		catch (Exception e){
+    		}
+            try{
+    			//入力ストリームの生成
+    			FileInputStream imputStream = openFileInput("Address1.txt");
+    			//入力ストリームのバッファーリング
+    			BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+    			//シーケンスオブジェクトの生成
+    			StringBuffer sequence32 = new StringBuffer();
+    			String readText;
+    			//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+    			while((readText = tmpBuffere.readLine()) != null){
+    				sequence32.append(readText);
+    			}
+    			//シーケンスに格納された文字列をテキストに表示する 
+    			text32 = sequence32.toString();
+    			//Toast.makeText(HB055Activity.this, text31, Toast.LENGTH_LONG).show();                
+    			
+    			//入力ストリームを閉じる			
+    			imputStream.close();
+    		}
+    		catch (Exception e){
+    		}
+            
+            try{
+    			//入力ストリームの生成
+    			FileInputStream imputStream = openFileInput("Name2.txt");
+    			//入力ストリームのバッファーリング
+    			BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+    			//シーケンスオブジェクトの生成
+    			StringBuffer sequence41 = new StringBuffer();
+    			String readText;
+    			//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+    			while((readText = tmpBuffere.readLine()) != null){
+    				sequence41.append(readText);
+    			}
+    			//シーケンスに格納された文字列をテキストに表示する
+    			text41 = sequence41.toString();                
+    			
+    			//入力ストリームを閉じる			
+    			imputStream.close();
+    		}
+    		catch (Exception e){
+    		}
+            try{
+     			//入力ストリームの生成
+     			FileInputStream imputStream = openFileInput("Address2.txt");
+     			//入力ストリームのバッファーリング
+     			BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+     			//シーケンスオブジェクトの生成
+     			StringBuffer sequence42 = new StringBuffer();
+     			String readText;
+     			//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+     			while((readText = tmpBuffere.readLine()) != null){
+     				sequence42.append(readText);
+     			}
+     			//シーケンスに格納された文字列をテキストに表示する
+     			text42 = sequence42.toString();                
+     			
+     			//入力ストリームを閉じる			
+     			imputStream.close();
+     		}
+     		catch (Exception e){
+     		}
+
+            try{
+    			//入力ストリームの生成
+    			FileInputStream imputStream = openFileInput("Sender.txt");
+    			//入力ストリームのバッファーリング
+    			BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+    			//シーケンスオブジェクトの生成
+    			StringBuffer sequence8 = new StringBuffer();
+    			String readText;
+    			//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+    			while((readText = tmpBuffere.readLine()) != null){
+    				sequence8.append(readText);
+    			}
+    			//シーケンスに格納された文字列をテキストに表示する 
+    			text8 = sequence8.toString();
+    			
+    			//入力ストリームを閉じる			
+    			imputStream.close();
+    		}
+    		catch (Exception e){
+    		} 
+            
+         if(v == varButton1){        	
+        	text10 = item2 + "メール";       	
+        	
+        	if(item3 == string31){
+        	   text30 = text32;
+        	} else{
+        	   text30 = text42;
+        	}
+        	
+        	
+        	text80 = text8 + "より"; 
+        	
+        	//Toast.makeText(HB057Activity.this, item3.substring(0,1), Toast.LENGTH_LONG).show();
+        	//Toast.makeText(HB057Activity.this, string31.substring(0,1), Toast.LENGTH_LONG).show();
+        	//Toast.makeText(HB057Activity.this, text30, Toast.LENGTH_LONG).show();
+    	    
+        	if(item2 == "着いた"){    	      
+    	      text20 = item3 + "へ" + "\n" + item4 + "に着きました。" +
+    	      "\n" + text80;
+        	}		    
+        	else if(item2 == "帰る　"){		      
+		      text20 = item3 + "へ" + "\n" + item4 + "を出ました。" +
+		      "\n" + text80;	 
+		    } 
+		    else{		      
+		      text20 = item3 + "へ" + "\n" + item5 + "遅れのため" + item6  +		      
+		      "遅れます。(" + item4  + ")" + "\n" + text80;
+		    } 
+    	           	
+        	//Toast.makeText(HB055Activity.this, text20, Toast.LENGTH_LONG).show();        	
+        	
+            Intent intent = new Intent();  
+    	    intent.setAction(Intent.ACTION_SEND); 
+    	    intent.setType("text/Gmail"); 
+    	    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{text30});		    
+        	intent.putExtra(Intent.EXTRA_SUBJECT, text10); 
+    	    intent.putExtra(Intent.EXTRA_TEXT, text20);
+           
+            startActivity(intent);            
+		}
+		//初期設定ボタンが押された時の処理		
+        else if(v == varButton2){
+		    //インテントに、この画面と、遷移する別の画面を指定する
+	        Intent intent = new Intent(HB057Activity.this,Activity_Sub057.class);
+
+            //インテントで指定した別の画面に遷移する
+            startActivity(intent);        
+        }
+        
+      //送信(住所付）ボタンが押された時の処理
+        else{
+        	
+        	text10 = item2 + "メール";        	
+        	
+        	if(item3 == string31){
+        	   text30 = text32;
+        	} else{
+        	   text30 = text42;
+        	}
+        	
+        	text80 = text8 + "より";
+        	
+        	//Toast.makeText(HB057Activity.this, text30, Toast.LENGTH_LONG).show();        	
+    	    
+        	if(item2 == "着いた"){    	      
+    	      text21 = item3 + "へ" + "\n" + item4 + "に着きました。";    	      
+        	}		    
+        	else if(item2 == "帰る　"){		      
+		      text21 = item3 + "へ" + "\n" + item4 + "を出ました。" ;	 
+		    } 
+		    else{		      
+		      text21 = item3 + "へ" + "\n" + item5 + "遅れのため" + item6  +		      
+		      "遅れます。(" + item4  + ")" ;
+		    } 
+        	
+        	
+        	
+          //インテントに、この画面と、遷移する別の画面を指定する
+          Intent intent = new Intent(HB057Activity.this,Activity_Gps057.class);          
+          
+          intent.putExtra("10",text10);
+          intent.putExtra("21",text21);
+          intent.putExtra("30",text30);
+          intent.putExtra("80",text80);
+          //インテントで指定した別の画面に遷移する	
+          
+          //Toast.makeText(HB057Activity.this, "GPS", Toast.LENGTH_LONG).show();
+          
+          startActivity(intent);        	
+        }	
+        
+	}
+	
+}
+11111111111111111111
+package com.example.hb057;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.example.hb057.Activity_Sub057;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
+import android.graphics.Typeface;
+import android.widget.Toast;
+
+//ActivityにOnClickListenerを設定しておく
+public class Activity_Sub057 extends Activity implements OnClickListener{
+
+	//見出し　連絡メール（初期設定）
+	TextView varTextView1;
+	//宛名
+	TextView varTextView21;
+	TextView varTextView22;
+	//ｱﾄﾞﾚｽ1
+	EditText varEditText31;
+	TextView varTextView3;
+	EditText varEditText32;
+	//ｱﾄﾞﾚｽ2
+	EditText varEditText41;
+	TextView varTextView4;
+	EditText varEditText42;
+	//差出人
+	TextView varTextView8;	
+	EditText varEditText8;	
+	
+	//確認ボタン
+	Button varButton1;	
+	//保存ボタン
+	Button varButton2;
+	//戻るボタン
+	Button varButton3;	
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		//LinearLayoutをインスタンス化する
+		//見出し
+		LinearLayout varLayout1 = new LinearLayout(this);
+		//宛名
+		LinearLayout varLayout2 = new LinearLayout(this);
+		//宛名説明
+		LinearLayout varLayout21 = new LinearLayout(this);
+		//アドレス1
+		LinearLayout varLayout3 = new LinearLayout(this);
+		//アドレス2
+		LinearLayout varLayout4 = new LinearLayout(this);
+		//差出人
+		LinearLayout varLayout8 = new LinearLayout(this);
+		//ボタン
+		LinearLayout varLayout9 = new LinearLayout(this);
+		
+		//縦並び		
+		varLayout1.setOrientation(LinearLayout.VERTICAL); 
+		//setContentView(varLayout1);
+		//varLayout2.setOrientation(LinearLayout.VERTICAL); 
+		//setContentView(varLayout2); @abend
+		//varLayout5.setOrientation(LinearLayout.VERTICAL);
+		setContentView(varLayout1);
+		//setContentView(varLayout5);		
+		//横並び デフォルト　
+		//varLayout3.setOrientation(LinearLayout.HORIZONTAL);		
+		//setContentView(varLayout3);
+
+		//Buttonのインスタンスを2個生成する
+		//確認ボタン
+        varButton1 = new Button(this);
+		LayoutParams parms91 = new LayoutParams(200,100);		
+		parms91.setMargins(50,0,0,0);		
+		varButton1.setLayoutParams(parms91); 
+		//保存ボタン
+        varButton2 = new Button(this);
+		LayoutParams parms92 = new LayoutParams(200,100);		
+		parms92.setMargins(0,0,0,0);		
+		varButton2.setLayoutParams(parms92);
+		//戻るボタン
+        varButton3 = new Button(this);
+		LayoutParams parms93 = new LayoutParams(200,100);		
+		parms93.setMargins(0,0,0,0);		
+		varButton3.setLayoutParams(parms93);
+
+		//Buttonに表示するテキストを設定
+        varButton1.setText("確認");
+        varButton2.setText("保存");
+		varButton3.setText("戻る");
+		
+		//TextView・EditTextのインスタンスを生成する
+		//見出し
+		varTextView1 = new TextView(this);
+		//宛名
+		varTextView21 = new TextView(this);
+		varTextView22 = new TextView(this);
+		//アドレス1
+		varEditText31 = new EditText(this);
+		varTextView3 = new TextView(this);
+		varEditText32 = new EditText(this);
+		//アドレス2
+		varEditText41 = new EditText(this);
+		varTextView4 = new TextView(this);
+		varEditText42 = new EditText(this);
+		//差出人
+		varTextView8 = new TextView(this);		
+		varEditText8 = new EditText(this);
+				
+        //見出しの設定
+		//LayoutParams(幅,高さ)
+		//setMargins(左,上,右､下)
+		LayoutParams parms1 = new LayoutParams(600,80);		
+		parms1.setMargins(100,0,0,0);		
+		varTextView1.setLayoutParams(parms1);		
+		varTextView1.setText("連絡メール（初期設定）");	
+        varTextView1.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView1.setTextSize(20);        
+        //宛名の設定     
+		LayoutParams parms21 = new LayoutParams(220,80);		
+		parms21.setMargins(0,0,0,0);		
+		varTextView21.setLayoutParams(parms21);		
+		varTextView21.setText("・宛名設定");	
+        varTextView21.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView21.setTextSize(17);
+        //宛名設定の説明
+        LayoutParams parms22 = new LayoutParams(700,80);
+        parms22.setMargins(20,0,0,0);
+        varTextView22.setLayoutParams(parms22);        
+        varTextView22.setText("(入力例  母 : xxx@yyy.ne.jp)");
+        //varTextView21.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView22.setTextSize(15);
+        //アドレス1の設定     
+		LayoutParams parms31 = new LayoutParams(100,80);		
+		parms31.setMargins(0,0,0,0);		
+		varEditText31.setLayoutParams(parms31);			
+		varEditText31.setTypeface(Typeface.DEFAULT_BOLD);
+		varEditText31.setTextSize(15);
+		LayoutParams parms3 = new LayoutParams(10,80);		
+		parms3.setMargins(0,0,0,0);		
+		varTextView3.setLayoutParams(parms3);		
+		varTextView3.setText(":");	
+        varTextView3.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView3.setTextSize(15);			
+		LayoutParams parms32 = new LayoutParams(600,80);		
+		parms32.setMargins(0,0,0,0);
+		varEditText32.setLayoutParams(parms32);		
+        //アドレス2の設定     
+		LayoutParams parms41 = new LayoutParams(100,80);		
+		parms41.setMargins(0,0,0,0);		
+		varEditText41.setLayoutParams(parms41);		
+		varEditText41.setTypeface(Typeface.DEFAULT_BOLD);
+		varEditText41.setTextSize(15);
+		LayoutParams parms4 = new LayoutParams(10,80);		
+		parms4.setMargins(0,0,0,0);		
+		varTextView4.setLayoutParams(parms4);		
+		varTextView4.setText(":");	
+        varTextView4.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView4.setTextSize(15);		
+		LayoutParams parms42 = new LayoutParams(600,80);		
+		parms42.setMargins(0,0,0,0);
+		varEditText42.setLayoutParams(parms42);
+        //差出人の設定     
+		LayoutParams parms81 = new LayoutParams(250,80);		
+		parms81.setMargins(0,0,0,0);		
+		varTextView8.setLayoutParams(parms81);		
+		varTextView8.setText("・差出人設定:");	
+        varTextView8.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView8.setTextSize(15);			
+		LayoutParams parms82 = new LayoutParams(200,100);		
+		parms82.setMargins(0,0,0,0);
+		varEditText8.setLayoutParams(parms82);        
+		
+		//ViewにTextViewを追加する
+        //見出し
+		varLayout1.addView(varTextView1);
+		//宛名
+		varLayout2.addView(varTextView21);
+		varLayout21.addView(varTextView22);
+		//母アドレス
+		varLayout3.addView(varEditText31);
+		varLayout3.addView(varTextView3);
+		varLayout3.addView(varEditText32);
+		//父アドレス
+		varLayout4.addView(varEditText41);
+		varLayout4.addView(varTextView4);
+		varLayout4.addView(varEditText42);
+		//差出人
+		varLayout8.addView(varTextView8);		
+		varLayout8.addView(varEditText8);
+		
+		//
+		varLayout1.addView(varLayout2);
+		varLayout1.addView(varLayout21);
+		varLayout1.addView(varLayout3);
+		varLayout1.addView(varLayout4);
+		varLayout1.addView(varLayout8);
+
+		//ButtonをLinearLayoutに追加してEventListenerを取得する
+		//確認ボタン
+        varLayout9.addView(varButton1);
+		varButton1.setOnClickListener(this);		
+		//保存ボタン
+        varLayout9.addView(varButton2);
+		varButton2.setOnClickListener(this);
+		//戻るボタン
+        varLayout9.addView(varButton3);
+		varButton3.setOnClickListener(this);
+        //ボタン　横並び
+		varLayout1.addView(varLayout9); 	
+	}	
+
+	public void onClick(View v){
+		//確認ボタンが押された時の処理
+		if(v == varButton1){
+	        try{
+				//入力ストリームの生成
+				FileInputStream imputStream = openFileInput("Name1.txt");
+				//入力ストリームのバッファーリング
+				BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+				//シーケンスオブジェクトの生成
+				StringBuffer sequence31 = new StringBuffer();
+				String readText;
+				//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+				while((readText = tmpBuffere.readLine()) != null){
+					sequence31.append(readText);
+				}
+				//シーケンスに格納された文字列をエディットテキストに表示する
+				varEditText31.setText(sequence31);
+				//入力ストリームを閉じる
+				imputStream.close();
+	            }
+			    catch(Exception e){
+			    }
+	        try{
+				//入力ストリームの生成
+				FileInputStream imputStream = openFileInput("Address1.txt");
+				//入力ストリームのバッファーリング
+				BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+				//シーケンスオブジェクトの生成
+				StringBuffer sequence32 = new StringBuffer();
+				String readText;
+				//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+				while((readText = tmpBuffere.readLine()) != null){
+					sequence32.append(readText);
+				}
+				//シーケンスに格納された文字列をエディットテキストに表示する
+				varEditText32.setText(sequence32);
+				//入力ストリームを閉じる
+				imputStream.close();
+	            }
+			    catch(Exception e){
+			    }
+	        try{
+				//入力ストリームの生成
+				FileInputStream imputStream = openFileInput("Name2.txt");
+				//入力ストリームのバッファーリング
+				BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+				//シーケンスオブジェクトの生成
+				StringBuffer sequence41 = new StringBuffer();
+				String readText;
+				//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+				while((readText = tmpBuffere.readLine()) != null){
+					sequence41.append(readText);
+				}
+				//シーケンスに格納された文字列をエディットテキストに表示する
+				varEditText41.setText(sequence41);
+				//入力ストリームを閉じる
+				imputStream.close();
+	            }
+			    catch(Exception e){
+			    }
+	        try{
+				//入力ストリームの生成
+				FileInputStream imputStream = openFileInput("Address2.txt");
+				//入力ストリームのバッファーリング
+				BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+				//シーケンスオブジェクトの生成
+				StringBuffer sequence42 = new StringBuffer();
+				String readText;
+				//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+				while((readText = tmpBuffere.readLine()) != null){
+					sequence42.append(readText);
+				}
+				//シーケンスに格納された文字列をエディットテキストに表示する
+				varEditText42.setText(sequence42);
+				//入力ストリームを閉じる
+				imputStream.close();
+	            }
+			    catch(Exception e){
+			    }
+	        try{
+				//入力ストリームの生成
+				FileInputStream imputStream = openFileInput("Sender.txt");
+				//入力ストリームのバッファーリング
+				BufferedReader tmpBuffere = new BufferedReader(new InputStreamReader(imputStream));
+				//シーケンスオブジェクトの生成
+				StringBuffer sequence8 = new StringBuffer();
+				String readText;
+				//バッファーのデータをWhile文を用いて全てシーケンスに読み込む
+				while((readText = tmpBuffere.readLine()) != null){
+					sequence8.append(readText);
+				}
+				//シーケンスに格納された文字列をエディットテキストに表示する
+				varEditText8.setText(sequence8);
+				//入力ストリームを閉じる
+				imputStream.close();
+	            }
+			    catch(Exception e){
+			    }	        
+		}
+		//保存ボタンが押された時の処理
+		else if(v == varButton2){
+		try{
+			//出力ストリームの生成
+			FileOutputStream outputStream = openFileOutput("Name1.txt",Context.MODE_PRIVATE);
+			//出力ストリームのバッファーリング
+			BufferedWriter saveText = new BufferedWriter(new OutputStreamWriter(outputStream));
+			//エディットテキストの文字列をバッファーに格納する
+			saveText.write(varEditText31.getText().toString());				
+			//バッファーのデータをファイルに書き込む
+			saveText.flush();							
+			//出力ストリームを閉じる
+			outputStream.close();
+		    }
+		    catch(Exception e){
+		    }	
+	    try{
+		    //出力ストリームの生成
+		    FileOutputStream outputStream = openFileOutput("Address1.txt",Context.MODE_PRIVATE);
+		    //出力ストリームのバッファーリング
+		    BufferedWriter saveText = new BufferedWriter(new OutputStreamWriter(outputStream));
+		    //エディットテキストの文字列をバッファーに格納する
+		    saveText.write(varEditText32.getText().toString());				
+		    //バッファーのデータをファイルに書き込む
+		    saveText.flush();							
+		    //出力ストリームを閉じる
+		    outputStream.close();
+	        }
+	        catch(Exception e){
+	        }
+	    try{
+		    //出力ストリームの生成
+		    FileOutputStream outputStream = openFileOutput("Name2.txt",Context.MODE_PRIVATE);
+		    //出力ストリームのバッファーリング
+		    BufferedWriter saveText = new BufferedWriter(new OutputStreamWriter(outputStream));
+		    //エディットテキストの文字列をバッファーに格納する
+		    saveText.write(varEditText41.getText().toString());
+		    //バッファーのデータをファイルに書き込む
+		    saveText.flush();
+		    //出力ストリームを閉じる
+		    outputStream.close();
+	        }
+	        catch(Exception e){
+	        }
+	    try{
+		    //出力ストリームの生成
+		    FileOutputStream outputStream = openFileOutput("Address2.txt",Context.MODE_PRIVATE);
+		    //出力ストリームのバッファーリング
+		    BufferedWriter saveText = new BufferedWriter(new OutputStreamWriter(outputStream));
+		    //エディットテキストの文字列をバッファーに格納する
+		    saveText.write(varEditText42.getText().toString());
+		    //バッファーのデータをファイルに書き込む
+		    saveText.flush();
+		    //出力ストリームを閉じる
+		    outputStream.close();
+	        }
+	        catch(Exception e){
+	        }
+
+	    try{
+			//出力ストリームの生成
+			FileOutputStream outputStream = openFileOutput("Sender.txt",Context.MODE_PRIVATE);
+			//出力ストリームのバッファーリング
+			BufferedWriter saveText = new BufferedWriter(new OutputStreamWriter(outputStream));
+			//エディットテキストの文字列をバッファーに格納する
+			saveText.write(varEditText8.getText().toString());
+			//バッファーのデータをファイルに書き込む
+			saveText.flush();
+			//出力ストリームを閉じる
+			outputStream.close();
+		    }
+		    catch(Exception e){
+		    } 
+
+        }
+		//戻るボタンが押された時の処理		
+        else if(v == varButton3){
+            //この画面を終了
+            finish();
+		}
+	}
+}
+22222222222222222222222222222222
+package com.example.hb057;  
+  
+import android.app.Activity;  
+import android.content.Context;  
+import android.content.Intent;
+import android.location.Criteria;  
+import android.location.Location;  
+import android.location.LocationListener;  
+import android.location.LocationManager;  
+import android.os.Bundle;  
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
+import android.view.View;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+import android.graphics.Typeface;
+import android.widget.Toast;
+import android.view.View.OnClickListener;
+import android.view.View;
+
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Locale;
+  
+public class Activity_Gps057 extends Activity implements OnClickListener {  
+    /** Called when the activity is first created. */
+	
+	//見出し（位置情報取得）
+	TextView varTextView1;
+	//緯度
+	TextView varTextView2;
+	//緯度の値
+	TextView varTextView21;
+	//経度
+	TextView varTextView3;
+	//経度の値
+	TextView varTextView31;
+
+	//送信（住所付）ボタン
+	Button varButton1;
+	//戻るボタン
+	Button varButton2;
+
+	String addr;	
+	
+    @Override  
+    public void onCreate(Bundle savedInstanceState) {  
+        super.onCreate(savedInstanceState);
+        
+      //LinearLayoutをインスタンス化する
+        LinearLayout varLayout1 = new LinearLayout(this);
+        varLayout1.setOrientation(LinearLayout.VERTICAL);
+        //経度
+        LinearLayout varLayout2 = new LinearLayout(this);
+        //varLayout2.setOrientation(LinearLayout.HORIZONTAL);　　＊デフォルト　横並び
+        //緯度
+        LinearLayout varLayout3 = new LinearLayout(this);
+        //ボタン
+        LinearLayout varLayout4 = new LinearLayout(this);
+        setContentView(varLayout1);
+
+        //Buttonのインスタンスを生成する
+        //送信（住所付）ボタン
+        varButton1 = new Button(this);
+        //戻るボタン
+        varButton2 = new Button(this); 
+
+        //LayoutParams(幅,高さ)
+        //setMargins(左,上,右､下)
+        //送信（住所付）ボタン
+        LayoutParams parms41 = new LayoutParams(300,100);
+        parms41.setMargins(100,0,0,0);
+        varButton1.setLayoutParams(parms41);
+        varButton1.setTextSize(15);
+        //戻るボタン
+        LayoutParams parms42 = new LayoutParams(200,100);
+        parms42.setMargins(50,0,0,0);
+        varButton2.setLayoutParams(parms42);
+        varButton2.setTextSize(15);
+
+        //Buttonに表示するテキストを設定
+        varButton1.setText("送信(住所付)");
+        varButton2.setText("戻る");
+
+        //TextViewのインスタンスを生成する
+        //見出し（位置情報取得）
+        varTextView1 = new TextView(this);
+        //緯度
+        varTextView2 = new TextView(this);
+        //緯度の値
+        varTextView21 = new TextView(this);
+        //経度
+        varTextView3 = new TextView(this);
+        //経度の値
+        varTextView31 = new TextView(this);
+
+        //見出しの設定
+        //LayoutParams(幅,高さ)
+        //setMargins(左,上,右､下)
+        LayoutParams parms1 = new LayoutParams(500,100);
+        parms1.setMargins(200,0,0,0);
+        varTextView1.setLayoutParams(parms1);
+        varTextView1.setText("位置情報取得");
+        varTextView1.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView1.setTextSize(20);
+        //緯度
+        LayoutParams parms2 = new LayoutParams(200,100);
+        parms2.setMargins(0,0,0,0);
+        varTextView2.setLayoutParams(parms2);
+        varTextView2.setText("・緯度:");
+        varTextView2.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView2.setTextSize(15);
+        //varTextView2.setBackgroundColor(Color.rgb(175, 238, 238));
+        //緯度の値
+        LayoutParams parms21 = new LayoutParams(300,100);
+        parms21.setMargins(0,0,0,0);
+        varTextView21.setLayoutParams(parms21);
+        //varTextView21.setText("・宛名:");
+        varTextView21.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView21.setTextSize(15);
+        //経度
+        LayoutParams parms3 = new LayoutParams(200,100);
+        parms3.setMargins(0,0,0,0);
+        varTextView3.setLayoutParams(parms3);
+        varTextView3.setText("・経度:");
+        varTextView3.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView3.setTextSize(15);
+        //経度の値
+        LayoutParams parms31 = new LayoutParams(300,100);
+        parms31.setMargins(0,0,0,0);
+        varTextView31.setLayoutParams(parms31);
+        //varTextView31.setText("・遅れ理由:");
+        varTextView31.setTypeface(Typeface.DEFAULT_BOLD);
+        varTextView31.setTextSize(15);
+
+        //ViewにTextViewを追加する
+        //見出し
+        varLayout1.addView(varTextView1);
+        //緯度
+        varLayout2.addView(varTextView2);
+        //緯度の値
+        varLayout2.addView(varTextView21);
+        //経度
+        varLayout3.addView(varTextView3);
+        //経度の値
+        varLayout3.addView(varTextView31);
+        
+        //ButtonをLinearLayoutに追加してEventListenerを取得する
+        varLayout4.addView(varButton1);
+        varButton1.setOnClickListener(this);
+        varLayout4.addView(varButton2);
+        varButton2.setOnClickListener(this);
+
+        varLayout1.addView(varLayout2);
+        varLayout1.addView(varLayout3);
+        varLayout1.addView(varLayout4);
+                  
+        ///////////////////////////////////  
+        // GPS   
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);  
+        
+        //locationManager.removeUpdates((LocationListener) this); 
+        //位置情報の要求条件を指定する  
+        Criteria criteria = new Criteria();  
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);    //精度を指定する  
+        criteria.setAltitudeRequired(false);                //標高を取得するかどうか  
+        criteria.setBearingRequired(false);                //進行方向を取得するかどうか  
+        criteria.setCostAllowed(false);                    //取得費用がかかることを許可するかどうか  
+        criteria.setPowerRequirement(Criteria.POWER_LOW);    //消費電力量を指定する  
+        criteria.setSpeedRequired(false);                //速度を取得するかどうか  
+          
+        //指定する取得条件でプロバイダーを取得  
+        String provider = locationManager.getBestProvider(criteria, true); 
+        
+        //Toast.makeText(Activity_Gps055.this, provider, Toast.LENGTH_LONG).show();
+          
+        //ロケーションリスナーを設定  
+          locationManager.requestLocationUpdates(provider,   
+                1000,    //リスナーに通知する最小時間間隔   
+                1,         //リスナーに通知する最小距離間隔  
+                locationListener);    //リスナー
+          
+          //Toast.makeText(Activity_Gps055.this, "no", Toast.LENGTH_LONG).show();
+          
+          //Toast.makeText(Activity_Gps057.this, "Gps1", Toast.LENGTH_LONG).show();
+
+    }
+  
+    //位置情報を画面に表示  
+    private void showLocation(Location location) {    	
+    	          
+        StringBuffer sb1 = new StringBuffer();
+        StringBuffer sb2 = new StringBuffer();
+        
+        //Toast.makeText(Activity_Gps057.this,"SL", Toast.LENGTH_LONG).show();
+          
+        if (location != null) {
+        	sb1.append(location.getLatitude());
+        	sb2.append(location.getLongitude());        	
+        	
+            //sb1.append("緯度：").append(location.getLatitude());  
+            //sb2.append("経度：").append(location.getLongitude());  
+            //sb.append("精度：").append(location.getAccuracy());  
+            //sb.append("標高：").append(location.getAltitude());  
+            //sb.append("時間：").append(location.getTime());  
+            //sb.append("速度：").append(location.getSpeed());  
+            //sb.append("進行方向：").append(location.getBearing());  
+            //sb.append("プロバイダ：").append(location.getProvider());  
+        } 
+        
+       //Toast.makeText(Activity_Gps055.this, sb1, Toast.LENGTH_LONG).show();
+
+       //文字列の取得（緯度）
+        String b1 = sb1.toString();                
+        //ダブル型への変換
+        double d1 = Double.parseDouble(b1);
+
+        //文字列の取得（経度）
+        String b2 = sb2.toString();                
+        //ダブル型への変換
+        double d2 = Double.parseDouble(b2);
+        
+        //Toast.makeText(Activity_Gps057.this, b1, Toast.LENGTH_LONG).show();
+        //Toast.makeText(Activity_Gps057.this, b2, Toast.LENGTH_LONG).show();
+        varTextView21.setText(b1);
+        varTextView31.setText(b2);
+         
+        // 住所の取得
+        StringBuffer strAddr = new StringBuffer();
+        Geocoder gcoder = new Geocoder(this, Locale.getDefault());
+        try {
+          List<Address> lstAddrs = gcoder.getFromLocation(d1, d2, 1);
+          for (Address addr : lstAddrs) {
+          int idx = addr.getMaxAddressLineIndex();
+          for (int i = 1; i <= idx; i++) {
+            strAddr.append(addr.getAddressLine(i));
+            Log.v("addr", addr.getAddressLine(i));
+          }
+          }
+		//シーケンスに格納された文字列をエディットテキストに表示する
+		//addr.setText(strAddr); 
+		
+        //Toast.makeText(Activity_Gps057.this, strAddr.toString(), Toast.LENGTH_LONG).show();
+        addr = strAddr.toString();
+        
+        } catch (IOException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+        } 
+        
+        //Toast.makeText(Activity_Gps056.this, s3, Toast.LENGTH_LONG).show();           
+
+    }
+   
+    private LocationListener locationListener = new LocationListener() {    	
+    	    	
+        //プロバイダ・ステータスが変更された時に呼び出される  
+        public void onStatusChanged(String provider, int status, Bundle extras) {              
+        }          
+        //プロバイダが利用可能になった時に呼び出される  
+        public void onProviderEnabled(String provider) {  
+        }          
+        //プロバイダが利用不可になった時に呼び出される  
+        public void onProviderDisabled(String provider) {  
+        }           
+        //位置情報が変更されたときに呼び出される  
+        public void onLocationChanged(Location location) {  
+          showLocation(location); 
+          
+          LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE); 
+          // 位置情報の更新を止める
+          locationManager.removeUpdates(locationListener);
+          
+          Toast.makeText(Activity_Gps057.this, "位置情報の取得を終了しました。", Toast.LENGTH_LONG).show();
+          
+          //finish(); 
+          
+        }                    
+   };
+   
+   public void onClick(View v){	
+   	//送信ボタンが押された時の処理
+   	if(v == varButton1){
+   		
+   		   //Toast.makeText(Activity_Gps057.this, "l", Toast.LENGTH_LONG).show();   
+   		   
+   	       //表題
+   		   //Intent intent = new Intent(); 
+           Intent intent10 = getIntent();           
+           String text10 = intent10.getStringExtra("10");
+           //Toast.makeText(Activity_Gps057.this, text10, Toast.LENGTH_LONG).show();
+           
+           //アドレス
+           //Intent intent = getIntent();           
+           String text30 = intent10.getStringExtra("30");
+           //Toast.makeText(Activity_Gps057.this, text30, Toast.LENGTH_LONG).show();
+           //本文
+           //Intent intent = getIntent();        
+           String text20 = intent10.getStringExtra("21");
+           String text80 = intent10.getStringExtra("80");
+           
+           String text21  = addr;
+           String text22  = text20 + "\n" + "(" + text21 + ")" + "\n" + text80; 
+           
+           //Toast.makeText(Activity_Gps057.this, "2", Toast.LENGTH_LONG).show();           
+              
+           Intent intent = new Intent();  
+           intent.setAction(Intent.ACTION_SEND); 
+           intent.setType("text/Gmail"); 
+           intent.putExtra(Intent.EXTRA_EMAIL, new String[]{text30});
+           intent.putExtra(Intent.EXTRA_SUBJECT, text10);
+           intent.putExtra(Intent.EXTRA_TEXT, text22);
+           //intent.putExtra(Intent.EXTRA_TEXT, text32);
+           startActivity(intent);               		
+   	}
+   	//戻るボタンが押された時の処理
+   	else if(v == varButton2){
+   		//この画面を終了
+   		finish();
+   	}    	        
+   }
+
+}  
+333333333333333333333333333333
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.hb057"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="16" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".HB057Activity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:label="@string/app_name" android:name=".Activity_Sub057"/>
+        <activity android:label="@string/app_name" android:name=".Activity_Gps057"/>
+    </application>
+    
+            <!-- GPS関連のパーミッション -->  
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />  
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
+    
+</manifest>
